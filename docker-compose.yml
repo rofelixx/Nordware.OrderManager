@@ -30,7 +30,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: OrderManager.Web.Api/Dockerfile
+      dockerfile: src/OrderManager.Web.Api/Dockerfile
     container_name: ordermanager-api
     ports:
       - "5000:8080"
