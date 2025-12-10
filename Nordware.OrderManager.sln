@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36401.2
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManager.Application", "OrderManager.Application\OrderManager.Application.csproj", "{3E24D3EB-96E5-4879-94A8-F244CA7D8562}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManager.Application", "src\OrderManager.Application\OrderManager.Application.csproj", "{3E24D3EB-96E5-4879-94A8-F244CA7D8562}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManager.Domain", "OrderManager.Domain\OrderManager.Domain.csproj", "{A03634FC-792F-4395-9BCC-9631C6AF0BDD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManager.Domain", "src\OrderManager.Domain\OrderManager.Domain.csproj", "{A03634FC-792F-4395-9BCC-9631C6AF0BDD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManager.Infrastructure", "OrderManager.Infrastructure\OrderManager.Infrastructure.csproj", "{0D93E65F-C68E-4567-B05C-AF72A46DD175}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManager.Infrastructure", "src\OrderManager.Infrastructure\OrderManager.Infrastructure.csproj", "{0D93E65F-C68E-4567-B05C-AF72A46DD175}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManager.Web.Api", "OrderManager.Web.Api\OrderManager.Web.Api.csproj", "{CC1D2395-06F0-41B9-8FFF-B85475A1861E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManager.Web.Api", "src\OrderManager.Web.Api\OrderManager.Web.Api.csproj", "{CC1D2395-06F0-41B9-8FFF-B85475A1861E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrderManager.Application.Tests", "tests\OrderManager.Application.Tests\OrderManager.Application.Tests.csproj", "{A8D5807E-C879-4CA7-8B8D-42195789F729}"
 EndProject
@@ -24,6 +24,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Itens de Solução", "Itens
 		docker-compose.yml = docker-compose.yml
 		Dockerfile.Tests = Dockerfile.Tests
 	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{DB842427-CE5C-4053-9E59-255EE12F3C05}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -124,6 +126,10 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{3E24D3EB-96E5-4879-94A8-F244CA7D8562} = {DB842427-CE5C-4053-9E59-255EE12F3C05}
+		{A03634FC-792F-4395-9BCC-9631C6AF0BDD} = {DB842427-CE5C-4053-9E59-255EE12F3C05}
+		{0D93E65F-C68E-4567-B05C-AF72A46DD175} = {DB842427-CE5C-4053-9E59-255EE12F3C05}
+		{CC1D2395-06F0-41B9-8FFF-B85475A1861E} = {DB842427-CE5C-4053-9E59-255EE12F3C05}
 		{A8D5807E-C879-4CA7-8B8D-42195789F729} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{310A3B34-36B4-4071-88D3-833193D652B4} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{EFCABB64-FF70-459B-9C0B-5C76BC44F6AB} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
