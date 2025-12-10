@@ -11,16 +11,21 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d ordermanager"]
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
-      retries: 10
+      retries: 5
 
   redis:
     image: redis:7
     container_name: ordermanager-redis
     ports:
       - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -31,8 +36,13 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
-  api:
+  ordermanager-api:
     build:
       context: .
       dockerfile: OrderManager.Web.Api/Dockerfile
@@ -44,9 +54,9 @@ services:
       postgres:
         condition: service_healthy
       redis:
-        condition: service_started
+        condition: service_healthy
       rabbitmq:
-        condition: service_started
+        condition: service_healthy
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=ordermanager;Username=postgres;Password=postgres"
@@ -54,6 +64,24 @@ services:
       RabbitMQ__Host: "rabbitmq"
       RabbitMQ__Username: "guest"
       RabbitMQ__Password: "guest"
+
+  ordermanager-tests:
+    image: mcr.microsoft.com/dotnet/sdk:9.0
+    container_name: ordermanager-tests
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    working_dir: /src
+    volumes:
+      - .:/src
+    environment:
+      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=ordermanager;Username=postgres;Password=postgres"
+    command: >
+      dotnet test OrderManager.Tests/OrderManager.Tests.csproj --logger "trx;LogFileName=results.trx"
 
 volumes:
   pgdata:
