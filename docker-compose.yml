@@ -47,5 +47,21 @@ services:
       RabbitMQ__Username: "guest"
       RabbitMQ__Password: "guest"
 
+  tests:
+    image: mcr.microsoft.com/dotnet/sdk:9.0
+    container_name: ordermanager-tests
+    working_dir: /src
+    volumes:
+      - .:/src
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
+    command: >
+      sh -c "dotnet restore && \
+             dotnet test tests/OrderManager.Application.Tests/OrderManager.Application.Tests.csproj --logger 'trx;LogFileName=results.trx' && \
+             dotnet test tests/OrderManager.Infrastructure.Tests/OrderManager.Infrastructure.Tests.csproj --logger 'trx;LogFileName=results.trx' && \
+             dotnet test tests/OrderManager.Web.Api.Tests/OrderManager.Web.Api.Tests.csproj --logger 'trx;LogFileName=results.trx'"
+
 volumes:
   pgdata:
