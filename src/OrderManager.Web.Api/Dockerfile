@@ -16,16 +16,16 @@ WORKDIR /src
 RUN dotnet nuget locals all --clear
 
 # Copiar todos os csproj primeiro (para cache de restore)
-COPY ["OrderManager.Application/OrderManager.Application.csproj", "OrderManager.Application/"]
-COPY ["OrderManager.Domain/OrderManager.Domain.csproj", "OrderManager.Domain/"]
-COPY ["OrderManager.Infrastructure/OrderManager.Infrastructure.csproj", "OrderManager.Infrastructure/"]
-COPY ["OrderManager.Web.Api/OrderManager.Web.Api.csproj", "OrderManager.Web.Api/"]
+COPY ["src/OrderManager.Application/OrderManager.Application.csproj", "OrderManager.Application/"]
+COPY ["src/OrderManager.Domain/OrderManager.Domain.csproj", "OrderManager.Domain/"]
+COPY ["src/OrderManager.Infrastructure/OrderManager.Infrastructure.csproj", "OrderManager.Infrastructure/"]
+COPY ["src/OrderManager.Web.Api/OrderManager.Web.Api.csproj", "OrderManager.Web.Api/"]
 
 # Restaurar dependencias
 RUN dotnet restore "OrderManager.Web.Api/OrderManager.Web.Api.csproj"
 
 # Copiar todo o código
-COPY . .
+COPY src/ .
 
 # Build do projeto web
 WORKDIR "/src/OrderManager.Web.Api"
