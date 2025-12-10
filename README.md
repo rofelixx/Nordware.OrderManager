@@ -32,28 +32,39 @@ docker-compose up --build -d
 ```
 Isso cria e sobe os containers:
 
-PostgreSQL
-Redis
-RabbitMQ
-OrderManager API
+- PostgreSQL
+- Redis
+- RabbitMQ
+- OrderManager API
 
 A API estará disponível em:
-HTTP: http://localhost:5000/swagger/index.html
-HTTPS: https://localhost:5001/swagger/index.html
+- HTTP: http://localhost:5000/swagger/index.html
+- HTTPS: https://localhost:5001/swagger/index.html
 
-
-// Para rodar os testes 
+### Para rodar os testes com Docker
 ```bash
 docker-compose run --rm tests
 ```
 
+### Rodando Localmente (Sem Docker)
+Use o comando para atualizar o DB a partir da migration já criada:
 
-Melhorias Futuras e Débitos Técnicos
+```bash
+dotnet ef database update --project src/OrderManager.Infrastructure --startup-project src/OrderManager.Web.Api
+```
 
--Versionamento de API
--Logging distribuído (ex: ELK, Seq)
--Monitoramento de metricas (Grafana)
--Revisão da seed de dados para ambientes de produção
--Testes de carga e performance
--Refatoração de serviços para maior desacoplamento
+Depois rode a API:
+
+```bash
+dotnet run --project src/OrderManager.Web.Api
+```
+
+### Melhorias Futuras e Débitos Técnicos
+
+- Versionamento de API
+- Logging distribuído (ex: ELK, Seq)
+- Monitoramento de metricas (Grafana)
+- Revisão da seed de dados para ambientes de produção
+- Testes de carga e performance
+- Refatoração de serviços para maior desacoplamento
 
