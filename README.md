@@ -68,3 +68,43 @@ dotnet run --project src/OrderManager.Web.Api
 - Testes de carga e performance
 - Refatoração de serviços para maior desacoplamento
 
+
+## Questões Teóricas
+
+1. Sistema de cache distribuído para consultas de pedidos
+
+Um cache distribuído guarda os resultados das consultas para que não precisemos ir ao banco de dados toda vez. Por exemplo, se alguém pedir os detalhes de um pedido, podemos salvar no Redis.
+Para manter os dados corretos, usamos invalidação:
+- Expiração automática (TTL): o cache "expira" depois de um tempo e os dados são recarregados do banco.
+- Invalidação ativa: quando um pedido é atualizado ou cancelado, removemos ou atualizamos o cache desse pedido imediatamente.
+
+2. Garantindo consistência eventual entre pedidos e estoque
+
+Quando temos serviços diferentes (como pedidos e estoque), nem sempre os dados ficam sincronizados. A consistência eventual significa que com o tempo eles se alinham.
+Para isso, podemos usar:
+- Eventos assíncronos: quando um pedido é criado ou atualizado, o serviço de pedidos envia um evento. O serviço de estoque lê esse evento e atualiza o estoque.
+- Padrão Saga: cria uma "história" de ações distribuídas com compensações caso algo falhe. Exemplo, se atualizar o estoque falhar, dá para desfazer o pedido.
+
+3. Mecanismo de retry resiliente para integrações externas
+
+Para serviços externos que falham, podemos tentar novamente de forma inteligente
+- Retry simples: tentar 2-3 vezes se der erro.
+- Backoff: esperar um tempo maior a cada tentativa (5s, 10s, 20s).
+- Circuit breaker: se muitas falhas acontecerem, para de tentar por um tempo para não sobrecarregar o serviço externo.
+
+4. Refatorando um método monolítico de 500 linhas
+
+- Começar dividindo em partes menores
+- Identificar blocos de lógica e criar funções separadas.
+- Aplicar o S do Solid, cada função faz só uma coisa.
+- Criar classes ou serviços para responsabilidades diferentes (ex: validação, cálculo, persistência).
+- Testar cada parte separadamente para garantir que nada esta com bug.
+
+5. Lidando com deadlocks em alta concorrência
+
+Deadlock acontece quando duas transações ficam presas, esperando uma pela outra.
+Para resolver:
+- Ordenar acesso aos recursos: sempre acessar tabelas ou registros na mesma ordem.
+- Timeouts e retries: se uma transação travar, tentar novamente.
+- Monitoramento: usar logs do banco ou ferramentas de profiling para identificar onde ocorrem os deadlocks.
+
