@@ -10,22 +10,12 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
   redis:
     image: redis:7
     container_name: ordermanager-redis
     ports:
       - "6379:6379"
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -36,13 +26,8 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
-    healthcheck:
-      test: ["CMD", "rabbitmq-diagnostics", "ping"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
 
-  ordermanager-api:
+  api:
     build:
       context: .
       dockerfile: OrderManager.Web.Api/Dockerfile
@@ -51,12 +36,9 @@ services:
       - "5000:8080"
       - "5001:8081"
     depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
+      - postgres
+      - redis
+      - rabbitmq
     environment:
       ASPNETCORE_ENVIRONMENT: Development
       ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=ordermanager;Username=postgres;Password=postgres"
@@ -65,23 +47,21 @@ services:
       RabbitMQ__Username: "guest"
       RabbitMQ__Password: "guest"
 
-  ordermanager-tests:
+  tests:
     image: mcr.microsoft.com/dotnet/sdk:9.0
     container_name: ordermanager-tests
-    depends_on:
-      postgres:
-        condition: service_healthy
-      redis:
-        condition: service_healthy
-      rabbitmq:
-        condition: service_healthy
     working_dir: /src
     volumes:
       - .:/src
-    environment:
-      ConnectionStrings__DefaultConnection: "Host=postgres;Port=5432;Database=ordermanager;Username=postgres;Password=postgres"
+    depends_on:
+      - postgres
+      - redis
+      - rabbitmq
     command: >
-      dotnet test OrderManager.Tests/OrderManager.Tests.csproj --logger "trx;LogFileName=results.trx"
+      sh -c "dotnet restore && \
+             dotnet test tests/OrderManager.Application.Tests/OrderManager.Application.Tests.csproj --logger 'trx;LogFileName=results.trx' && \
+             dotnet test tests/OrderManager.Infrastructure.Tests/OrderManager.Infrastructure.Tests.csproj --logger 'trx;LogFileName=results.trx' && \
+             dotnet test tests/OrderManager.Web.Api.Tests/OrderManager.Web.Api.Tests.csproj --logger 'trx;LogFileName=results.trx'"
 
 volumes:
   pgdata:
