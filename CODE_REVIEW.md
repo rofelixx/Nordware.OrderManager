@@ -21,6 +21,14 @@
 6. **Exceção sem o throw**
 
 
+## Melhorias aplicadas:
+- Conexão local e segura com using.
+- SQL parametrizado para evitar SQL Injection.
+- Inserção de itens dentro da transação.
+- Removido Thread.Sleep.
+- Tratamento de exceções.
+- Código mais legível e fácil de testar.
+
 ### Codifo Refatorado:
    ```csharp
       public class OrderService
