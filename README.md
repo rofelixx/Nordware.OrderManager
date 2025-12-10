@@ -8,8 +8,8 @@ O projeto é dividido em camadas:
 - **WEB API**: Interface de entrada (camada de apresentação) que expõe os endpoints REST.
 - **Application**: Contém os casos de uso e serviços de aplicação.
 - **Domain**: Contém entidades de negócio, agregados e regras de domínio.
-- **Infrastructure**: Implementação de persistência (Entity Framework Core / PostgreSQL), serviços externos e repositórios.
-- **Messaging**: Configuração de mensageria (MassTransit + RabbitMQ) e integração assíncrona.
+- **Infrastructure**: Implementação de persistência (Entity Framework Core / PostgreSQL), serviços externos (ViaCep, Frete) e repositórios.
+- **Messaging**: Dentro do InfraStructure temos a configuração de mensageria (MassTransit + RabbitMQ) e integração assíncrona.
 - **Tests**: Testes unitários e de integração organizados em `tests/`.
 
 A arquitetura segue princípios de separação de responsabilidades, inversão de dependência e utilização de DDD (Domain-Driven Design).
