@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace OrderManager.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -47,7 +47,8 @@ namespace OrderManager.Infrastructure.Migrations
                     Complement = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     Neighborhood = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     City = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
-                    State = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false)
+                    State = table.Column<string>(type: "character varying(2)", maxLength: 2, nullable: false),
+                    Number = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -93,11 +94,11 @@ namespace OrderManager.Infrastructure.Migrations
 
             migrationBuilder.InsertData(
                 table: "Addresses",
-                columns: new[] { "OrderId", "Cep", "City", "Complement", "Id", "Neighborhood", "State", "Street" },
+                columns: new[] { "OrderId", "Cep", "City", "Complement", "Id", "Neighborhood", "Number", "State", "Street" },
                 values: new object[,]
                 {
-                    { new Guid("11111111-1111-1111-1111-111111111111"), "12345-678", "Curitiba", "Apto 101", new Guid("55555555-5555-5555-5555-555555555555"), "Centro", "PR", "Rua das Flores" },
-                    { new Guid("22222222-2222-2222-2222-222222222222"), "98765-432", "Curitiba", "", new Guid("66666666-6666-6666-6666-666666666666"), "Jardins", "PR", "Avenida Brasil" }
+                    { new Guid("11111111-1111-1111-1111-111111111111"), "12345-678", "Curitiba", "Apto 101", new Guid("55555555-5555-5555-5555-555555555555"), "Centro", 100, "PR", "Rua das Flores" },
+                    { new Guid("22222222-2222-2222-2222-222222222222"), "98765-432", "Curitiba", "", new Guid("66666666-6666-6666-6666-666666666666"), "Jardins", 100, "PR", "Avenida Brasil" }
                 });
 
             migrationBuilder.InsertData(

@@ -204,6 +204,9 @@ namespace OrderManager.Infrastructure.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)");
 
+                            b1.Property<int>("Number")
+                                .HasColumnType("integer");
+
                             b1.Property<string>("State")
                                 .IsRequired()
                                 .HasMaxLength(2)
@@ -230,6 +233,7 @@ namespace OrderManager.Infrastructure.Migrations
                                     Complement = "Apto 101",
                                     Id = new Guid("55555555-5555-5555-5555-555555555555"),
                                     Neighborhood = "Centro",
+                                    Number = 100,
                                     State = "PR",
                                     Street = "Rua das Flores"
                                 },
@@ -241,6 +245,7 @@ namespace OrderManager.Infrastructure.Migrations
                                     Complement = "",
                                     Id = new Guid("66666666-6666-6666-6666-666666666666"),
                                     Neighborhood = "Jardins",
+                                    Number = 100,
                                     State = "PR",
                                     Street = "Avenida Brasil"
                                 });

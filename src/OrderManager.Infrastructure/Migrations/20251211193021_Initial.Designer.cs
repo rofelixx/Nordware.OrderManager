@@ -12,8 +12,8 @@ using OrderManager.Infrastructure.Persistence;
 namespace OrderManager.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20251210024512_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20251211193021_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -207,6 +207,9 @@ namespace OrderManager.Infrastructure.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("character varying(100)");
 
+                            b1.Property<int>("Number")
+                                .HasColumnType("integer");
+
                             b1.Property<string>("State")
                                 .IsRequired()
                                 .HasMaxLength(2)
@@ -233,6 +236,7 @@ namespace OrderManager.Infrastructure.Migrations
                                     Complement = "Apto 101",
                                     Id = new Guid("55555555-5555-5555-5555-555555555555"),
                                     Neighborhood = "Centro",
+                                    Number = 100,
                                     State = "PR",
                                     Street = "Rua das Flores"
                                 },
@@ -244,6 +248,7 @@ namespace OrderManager.Infrastructure.Migrations
                                     Complement = "",
                                     Id = new Guid("66666666-6666-6666-6666-666666666666"),
                                     Neighborhood = "Jardins",
+                                    Number = 100,
                                     State = "PR",
                                     Street = "Avenida Brasil"
                                 });
