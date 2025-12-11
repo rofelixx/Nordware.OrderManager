@@ -88,7 +88,8 @@ namespace OrderManager.Application.Services
                 complement: addressInfo.Complemento,
                 neighborhood: addressInfo.Bairro,
                 city: addressInfo.Localidade,
-                state: addressInfo.Uf
+                state: addressInfo.Uf,
+                number: dto.ShippingAddress.Number
             );
 
             order.SetShippingAddress(address);
@@ -141,7 +142,8 @@ namespace OrderManager.Application.Services
                 complement: dto.ShippingAddress.Complement,
                 neighborhood: dto.ShippingAddress.Neighborhood,
                 city: dto.ShippingAddress.City,
-                state: dto.ShippingAddress.State
+                state: dto.ShippingAddress.State,
+                number: dto.ShippingAddress.Number
             );
 
             order.SetShippingAddress(address);
@@ -304,7 +306,8 @@ namespace OrderManager.Application.Services
                         complement: dto.ShippingAddress.Complement,
                         neighborhood: dto.ShippingAddress.Neighborhood,
                         city: dto.ShippingAddress.City,
-                        state: dto.ShippingAddress.State
+                        state: dto.ShippingAddress.State,
+                        number: dto.ShippingAddress.Number
                     );
 
                     order.SetShippingAddress(address);

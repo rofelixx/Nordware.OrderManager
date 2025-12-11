@@ -112,7 +112,8 @@ namespace OrderManager.Infrastructure.Persistence
                     Complement = "Apto 101",
                     Neighborhood = "Centro",
                     City = "Curitiba",
-                    State = "PR"
+                    State = "PR",
+                    Number = 100
                 },
                 new
                 {
@@ -123,7 +124,8 @@ namespace OrderManager.Infrastructure.Persistence
                     Complement = "",
                     Neighborhood = "Jardins",
                     City = "Curitiba",
-                    State = "PR"
+                    State = "PR",
+                    Number = 100
                 }
             );
 

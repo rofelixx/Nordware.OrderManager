@@ -9,8 +9,8 @@
         public string Neighborhood { get; set; } = null!;
         public string City { get; set; } = null!;
         public string State { get; set; } = null!;
-
-        public Address() { } // EF Core
+        public int Number { get; set; }
+        public Address() { }
 
         public Address(
             string cep,
@@ -18,7 +18,8 @@
             string? complement,
             string neighborhood,
             string city,
-            string state)
+            string state,
+            int number)
         {
             if (string.IsNullOrWhiteSpace(cep)) throw new ArgumentException("CEP inválido", nameof(cep));
             if (string.IsNullOrWhiteSpace(street)) throw new ArgumentException("Logradouro inválido", nameof(street));
@@ -32,23 +33,7 @@
             Neighborhood = neighborhood;
             City = city;
             State = state;
-        }
-
-        public void Update(
-            string cep,
-            string street,
-            string? complement,
-            string neighborhood,
-            string city,
-            string state)
-        {
-            Cep = cep;
-            Street = street;
-            Complement = complement ?? string.Empty;
-            Neighborhood = neighborhood;
-            City = city;
-            State = state;
+            Number = number;
         }
     }
-
 }
