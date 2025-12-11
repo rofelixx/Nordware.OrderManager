@@ -18,9 +18,9 @@ namespace OrderManager.Application.Validators
                 .NotEmpty().WithMessage("O email do cliente é obrigatório.")
                 .MaximumLength(150).WithMessage("O email do cliente deve ter no máximo 150 caracteres.");
 
-            RuleFor(x => x.CustomerCep)
-                .MaximumLength(300).WithMessage("O Cep de entrega deve ter no máximo 300 caracteres.")
-                .When(x => !string.IsNullOrWhiteSpace(x.CustomerCep));
+            RuleFor(x => x.ShippingAddress)
+              .NotNull()
+              .SetValidator(new AddressDtoValidator());
 
             RuleFor(x => x.Items)
                 .NotEmpty().WithMessage("O pedido deve possuir ao menos 1 item.")

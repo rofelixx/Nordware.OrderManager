@@ -64,7 +64,7 @@ namespace OrderManager.Application.Services
             // calcular frete
             var freightReq = new FreightQuoteRequestDto
             {
-                CepDestino = dto.CustomerCep,
+                CepDestino = dto.ShippingAddress.Cep,
                 WeightKg = 1.0m,
                 VolumeM3 = 0.01m
             };
@@ -77,10 +77,10 @@ namespace OrderManager.Application.Services
             );
 
             //buscar info do endereco pelo cep (Api externa)
-            var addressInfo = await _viaCepService.GetAddressByCepAsync(dto.CustomerCep, ct);
+            var addressInfo = await _viaCepService.GetAddressByCepAsync(dto.ShippingAddress.Cep, ct);
 
             if (addressInfo == null)
-                throw new ArgumentException("CEP inválido.", nameof(dto.CustomerCep));
+                throw new ArgumentException("CEP inválido.", nameof(dto.ShippingAddress.Cep));
 
             var address = new Address(
                 cep: addressInfo.Cep,

@@ -7,10 +7,18 @@ namespace OrderManager.Application.Validators
     {
         public UpdateOrderDtoValidator()
         {
-            RuleFor(x => x.ShippingAddress).NotEmpty();
             RuleFor(x => x.CustomerName).NotEmpty().MaximumLength(200);
 
-            RuleForEach(x => x.Items).SetValidator(new UpdateOrderItemDtoValidator());
+            RuleFor(x => x.ShippingAddress)
+              .NotNull()
+              .SetValidator(new AddressDtoValidator());
+
+            RuleFor(x => x.Items)
+                .NotEmpty().WithMessage("O pedido deve possuir ao menos 1 item.")
+                .Must(items => items.Count > 0).WithMessage("A lista de itens não pode estar vazia.");
+
+            RuleForEach(x => x.Items)
+                .SetValidator(new UpdateOrderItemDtoValidator());
         }
     }
 

@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentValidation.TestHelper;
 using OrderManager.Application.Dto;
 using OrderManager.Application.Validators;
 using System;
@@ -16,58 +17,86 @@ namespace OrderManager.Application.Tests.Validators
             _validator = new CreateOrderDtoValidator();
         }
 
-        [Fact]
-        public void Should_Return_Error_When_CustomerId_Is_Invalid()
+        private CreateOrderDto MakeValid()
         {
-            var dto = new CreateOrderDto
-            {
-                CustomerId = Guid.Empty,
-                Items = new List<CreateOrderItemDto>()
-            };
-
-            var result = _validator.Validate(dto);
-
-            result.IsValid.Should().BeFalse();
-            result.Errors.Should().Contain(x => x.PropertyName == "CustomerId");
-        }
-
-        [Fact]
-        public void Should_Return_Error_When_No_Items_Were_Provided()
-        {
-            var dto = new CreateOrderDto
-            {
-                CustomerId = Guid.Empty,
-                Items = new List<CreateOrderItemDto>()
-            };
-
-            var result = _validator.Validate(dto);
-
-            result.IsValid.Should().BeFalse();
-        }
-
-        [Fact]
-        public void Should_Pass_When_Dto_Is_Valid()
-        {
-            var dto = new CreateOrderDto
+            return new CreateOrderDto
             {
                 CustomerId = Guid.NewGuid(),
-                CustomerEmail = "email@mail.com",
-                CustomerName = "Customer Name",
-                CustomerCep = "123456",                            
-                Items = new()
+                CustomerName = "John Doe",
+                CustomerEmail = "email@email.com",
+                ShippingAddress = new AddressDto
                 {
-                    new CreateOrderItemDto 
+                    Street = "Rua A",
+                    Number = 123,
+                    Neighborhood = "Centro",
+                    City = "Curitiba",
+                    State = "PR",
+                    Cep = "12345000"
+                },
+                Items = new List<CreateOrderItemDto>()
+                {
+                    new CreateOrderItemDto
                     {
-                        Name = "Item 1",
-                        Sku = "SKU1",
-                        UnitPrice = 10,
-                        Quantity = 2
+                        Sku = "ABC123",
+                        Name = "Produto",
+                        Quantity = 2,
+                        UnitPrice = 10
                     }
                 }
             };
+        }
 
-            var result = _validator.Validate(dto);
-            result.IsValid.Should().BeTrue();
+        [Fact]
+        public void Should_Pass_When_Valid()
+        {
+            var model = MakeValid();
+            var result = _validator.TestValidate(model);
+            result.ShouldNotHaveAnyValidationErrors();
+        }
+
+        [Fact]
+        public void Should_Have_Error_When_CustomerName_Is_Empty()
+        {
+            var model = MakeValid();
+            model.CustomerName = "";
+            var result = _validator.TestValidate(model);
+            result.ShouldHaveValidationErrorFor(x => x.CustomerName);
+        }
+
+        [Fact]
+        public void Should_Have_Error_When_CustomerEmail_Is_Invalid()
+        {
+            var model = MakeValid();
+            model.CustomerEmail = "";
+            var result = _validator.TestValidate(model);
+            result.ShouldHaveValidationErrorFor(x => x.CustomerEmail);
+        }
+
+        [Fact]
+        public void Should_Have_Error_When_Cep_Is_Empty()
+        {
+            var model = MakeValid();
+            model.ShippingAddress.Cep = null;
+            var result = _validator.TestValidate(model);
+            result.ShouldHaveValidationErrorFor(x => x.ShippingAddress.Cep);
+        }
+
+        [Fact]
+        public void Should_Have_Error_When_Items_Is_Empty()
+        {
+            var model = MakeValid();
+            model.Items.Clear();
+            var result = _validator.TestValidate(model);
+            result.ShouldHaveValidationErrorFor(x => x.Items);
+        }
+
+        [Fact]
+        public void Should_Have_Error_When_Item_Is_Invalid()
+        {
+            var model = MakeValid();
+            model.Items[0].Quantity = 0;
+            var result = _validator.TestValidate(model);
+            result.ShouldHaveValidationErrorFor("Items[0].Quantity");
         }
     }
 }
