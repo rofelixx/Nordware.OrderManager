@@ -8,6 +8,7 @@ namespace OrderManager.Application.Dto
         public Guid CustomerId { get; set; }
         public string CustomerName { get; set; } 
         public string CustomerEmail { get; set; }
+        public string CustomerCep { get; set; }
         public AddressDto ShippingAddress { get; set; } = null!;
         public List<UpdateOrderItemDto> Items { get; set; }
         public decimal FreightCost { get; set; }

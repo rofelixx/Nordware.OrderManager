@@ -58,7 +58,16 @@ namespace OrderManager.Application.Tests.Services
                 CustomerId = Guid.NewGuid(),
                 CustomerName = "John Doe",
                 CustomerEmail = "john@test.com",
-                CustomerCep = "12345678",
+                ShippingAddress = new AddressDto
+                {
+                    Street = "Street 1",
+                    City = "City",
+                    State = "PR",
+                    Cep = "12345620",
+                    Complement = "Complement",
+                    Neighborhood = "Neighborhood",
+                    Number = 100
+                },
                 Items = new List<CreateOrderItemDto>
                 {
                     new() { Sku = "SKU1", Name = "Item 1", Quantity = 2, UnitPrice = 10 }
@@ -74,7 +83,7 @@ namespace OrderManager.Application.Tests.Services
                 .ReturnsAsync(new FreightQuoteResponseDto { Price = 5, Type = Domain.Enums.FreightType.Standard, EstimatedDays = 3 });
 
             _viaCepServiceMock
-                .Setup(v => v.GetAddressByCepAsync(dto.CustomerCep, It.IsAny<CancellationToken>()))
+                .Setup(v => v.GetAddressByCepAsync(dto.ShippingAddress.Cep, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new ViaCepResponseDto(
                     Cep: "12345-678",
                     Logradouro: "Rua Exemplo",
