@@ -64,7 +64,7 @@ namespace OrderManager.Application.Services
             // calcular frete
             var freightReq = new FreightQuoteRequestDto
             {
-                CepDestino = dto.ShippingAddress,
+                CepDestino = dto.CustomerCep,
                 WeightKg = 1.0m,
                 VolumeM3 = 0.01m
             };
